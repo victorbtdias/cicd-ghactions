@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: node:18
+    container_name: api
+    restart: unless-stopped
+    ports:
+      - "3030:3030"
+    environment:
+      TZ: America/Sao_Paulo
+      DATABASE_URL: ${DATABASE_URL}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      ADMINJS_COOKIE_PASSWORD: ${ADMINJS_COOKIE_PASSWORD}
+      USER_PASSWORD: ${USER_PASSWORD}
+      NODE_ENV: ${NODE_ENV}
+    networks:
+      - api-cicd
+
+networks:
+  api-cicd:
+    driver: bridge
