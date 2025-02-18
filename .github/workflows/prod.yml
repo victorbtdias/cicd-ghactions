@@ -11,8 +11,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Login Docker Hub
-        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
       - name: Build the Docker image
         run: docker build -t victorbtdias159/cicd-deploy .
       - name: Push to Dockerhub
         run: docker push victorbtdias159/cicd-deploy:latest
+
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Pull Docker image
+        run: sudo docker pull victorbtdias159/cicd-deploy:latest
+      - name: Stop and remove old containers
+        run: sudo docker-compose down || true
+      - name: Start services with Docker Compose
+        run: |
+          export DATABASE_URL=${{ secrets.DATABASE_URL }}
+          export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          export ADMINJS_COOKIE_PASSWORD=${{ secrets.ADMINJS_COOKIE_PASSWORD }}
+          export USER_PASSWORD=${{ secrets.USER_PASSWORD }}
+          export NODE_ENV=${{ secrets.NODE_ENV }}
+          sudo docker-compose up -d --force-recreate --remove-orphans
+      - name: Clean up unused Docker images
+        run: sudo docker system prune -f
