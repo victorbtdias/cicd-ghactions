@@ -23,15 +23,9 @@ jobs:
     steps:
       - name: Pull Docker image
         run: sudo docker pull victorbtdias159/cicd-deploy:latest
-      - name: Stop and remove old containers
-        run: sudo docker-compose down || true
-      - name: Start services with Docker Compose
-        run: |
-          export DATABASE_URL=${{ secrets.DATABASE_URL }}
-          export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-          export ADMINJS_COOKIE_PASSWORD=${{ secrets.ADMINJS_COOKIE_PASSWORD }}
-          export USER_PASSWORD=${{ secrets.USER_PASSWORD }}
-          export NODE_ENV=${{ secrets.NODE_ENV }}
-          sudo docker-compose up -d --force-recreate --remove-orphans
+      - name: Delete Old docker container
+        run: sudo docker rm -f api || true
+      - name: Run Docker Container
+        run: sudo docker run -d -p 3030:3030 --name api victorbtdias159/cicd-deploy
       - name: Clean up unused Docker images
         run: sudo docker system prune -f
