@@ -26,6 +26,14 @@ jobs:
       - name: Delete Old docker container
         run: sudo docker rm -f api || true
       - name: Run Docker Container
-        run: sudo docker run -d -p 3030:3030 --name api victorbtdias159/cicd-deploy
+        run: |
+          sudo docker run -d -p 3030:3030 --name api \
+          -e TZ="America/Sao_Paulo" \
+          -e DATABASE_URL="${DATABASE_URL}" \
+          -e POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \
+          -e ADMINJS_COOKIE_PASSWORD="${ADMINJS_COOKIE_PASSWORD}" \
+          -e USER_PASSWORD="${USER_PASSWORD}" \
+          -e NODE_ENV="${NODE_ENV}" \
+          victorbtdias159/cicd-deploy:latest
       - name: Clean up unused Docker images
         run: sudo docker system prune -f
