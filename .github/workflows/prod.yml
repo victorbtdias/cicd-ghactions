@@ -10,3 +10,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Login Docker Hub
+        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+      - name: Build the Docker image
+        run: docker build -t victorbtdias159/cicd-deploy .
+      - name: Push to Dockerhub
+        run: docker push victorbtdias159/cicd-deploy:latest
