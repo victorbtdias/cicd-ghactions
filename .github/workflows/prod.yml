@@ -1,4 +1,4 @@
-name: Deploy CICD API
+name: Deploy CICD
 
 on:
   push:
