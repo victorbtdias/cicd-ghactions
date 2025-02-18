@@ -13,8 +13,8 @@ export const userResourceOptions: ResourceOptions = {
       ],
     },
   },
-  editProperties: ["name", "email", "password", "role"],
-  filterProperties: ["name", "email", "role"],
-  listProperties: ["id", "name", "email", "role"],
-  showProperties: ["id", "name", "email", "role", "createdAt", "updatedAt"],
+  editProperties: ["nome", "email", "password", "role"],
+  filterProperties: ["nome", "email", "role"],
+  listProperties: ["id", "nome", "email", "role"],
+  showProperties: ["id", "nome", "email", "role", "createdAt", "updatedAt"],
 };
