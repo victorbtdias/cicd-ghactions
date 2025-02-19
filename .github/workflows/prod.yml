@@ -23,6 +23,11 @@ jobs:
     needs: build
     runs-on: self-hosted
     steps:
+      - name: Login Docker Hub
+        env:
+          DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
       - name: Pull Docker image
         run: sudo docker pull victorbtdias159/cicd-deploy:latest
       - name: Delete Old docker container
