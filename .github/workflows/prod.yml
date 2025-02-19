@@ -36,7 +36,7 @@ jobs:
           USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
           NODE_ENV: ${{ secrets.NODE_ENV }}
         run: |
-          sudo docker run -d -p 3030:3030 --name api \
+          sudo docker run -d --restart unless-stopped -p 3030:3030 --name api \
           -e TZ="${TZ}" \
           -e DATABASE_URL="${DATABASE_URL}" \
           -e POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \
